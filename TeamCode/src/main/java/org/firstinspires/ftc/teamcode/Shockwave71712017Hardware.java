@@ -34,6 +34,7 @@ public class Shockwave71712017Hardware
     public DcMotor v_motor_intake_left;
     public DcMotor v_motor_intake_right;
     public DcMotor v_motor_pulley;
+    public DcMotor v_motor_measuring_tape;
     public Servo v_servo_jewel;
     public Servo v_servo_rotator;
     public Servo v_servo_top_lift;
@@ -88,6 +89,7 @@ public class Shockwave71712017Hardware
             v_servo_intakeHelp2 = hwMap.crservo.get("servo_intake_help2");
             v_servo_intakeHelp2.setPower(intakeHelper2Stop);
 
+
             v_motor_pulley = hwMap.dcMotor.get("pulley");
             v_servo_skystone_puller = hwMap.servo.get("skystone_puller"); //side BIG servo
             v_servo_skystone_puller.setPosition(.8);
@@ -108,6 +110,11 @@ public class Shockwave71712017Hardware
 
             v_servo_capstone = hwMap.servo.get("servo_capstone");
             v_servo_capstone.setPosition(0);
+
+            v_motor_measuring_tape = hwMap.dcMotor.get("measuring_tape");
+            //v_motor_measuring_tape.setDirection(DcMotor.Direction.REVERSE);
+
+
             colorSensor = hwMap.colorSensor.get("csensor");
             colorSensor.enableLed(false);
             colorDistanceSensor = hwMap.get(DistanceSensor.class, "color_distance");

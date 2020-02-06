@@ -84,6 +84,7 @@ public class Shockwave71712017TeleOp extends OpMode {
         float gp2_right_trigger = gamepad2.right_trigger;
 
         boolean reducedspeed = false;
+        boolean switchrightsticktotape = false;
         boolean gp2_y_button = gamepad2.y;
         boolean gp2_a_button = gamepad2.a;
         boolean gp2_b_button = gamepad2.b;
@@ -133,16 +134,16 @@ public class Shockwave71712017TeleOp extends OpMode {
         set_drive_power_macanum(gamepad1);
         //  single_stick_drive(l_gp1_right_stick_y, l_gp1_right_stick_x);
 
-        if(counttimeg1) {
+        if (counttimeg1) {
             elapsedtimeg1 += 1;
-            if(elapsedtimeg1>thresholdtime){
+            if (elapsedtimeg1 > thresholdtime) {
                 elapsedtimeg1 = 0;
                 counttimeg1 = false;
             }
         }
-        if(counttimeg2) {
+        if (counttimeg2) {
             elapsedtimeg2 += 1;
-            if(elapsedtimeg2>thresholdtime){
+            if (elapsedtimeg2 > thresholdtime) {
                 elapsedtimeg2 = 0;
                 counttimeg2 = false;
             }
@@ -165,25 +166,25 @@ public class Shockwave71712017TeleOp extends OpMode {
         if (gamepad1.b) {
             ldScalingFactor = 1.0;
         }
-        if(gamepad1.y) {
+        if (gamepad1.y) {
             robot.v_servo_top_lift.setPosition(1);
             robot.v_servo_grabber.setPosition(0.4); // original 1.0
             // topliftdown = false;
         }
-        if(gamepad1.a ){
+        if (gamepad1.a) {
             robot.v_servo_top_lift.setPosition(0.2);
             long start = System.currentTimeMillis();
-            while(shockWait(300, start));//orginal 0.9
+            while (shockWait(300, start)) ;//orginal 0.9
             robot.v_servo_grabber.setPosition(0.1); // ORIGINAL : 0.2
 
             //topliftdown = true;
         }
-        if(gamepad1.left_trigger>0) {
+        if (gamepad1.left_trigger > 0) {
             robot.v_servo_skystone_grabber.setPosition(0);
         }
-        if(gamepad1.right_trigger>0)
+        if (gamepad1.right_trigger > 0)
             robot.v_servo_skystone_grabber.setPosition(1);
-        if(gamepad1.right_bumper )
+        if (gamepad1.right_bumper)
             robot.v_servo_skystone_puller.setPosition(0.2); //uo
         if (gamepad1.left_bumper)
             robot.v_servo_skystone_puller.setPosition(0.8);  //down
@@ -193,30 +194,28 @@ public class Shockwave71712017TeleOp extends OpMode {
          * GamePad #2 Controls
          *******************************************************************************
          */
-        if(gamepad2.right_trigger > 0) {
+        if (gamepad2.right_trigger > 0) {
             robot.v_servo_foundation_right.setPosition(0);
             robot.v_servo_foundation_left.setPosition(1.0);
         }
-        if(gamepad2.left_trigger > 0) {
+        if (gamepad2.left_trigger > 0) {
             robot.v_servo_foundation_right.setPosition(0.8);
             robot.v_servo_foundation_left.setPosition(0.2);
         }
-
-        robot.v_motor_intake_right.setPower(gamepad2.left_stick_y);
-        robot.v_motor_intake_left.setPower(gamepad2.left_stick_y);
-        if(gamepad2.left_stick_y < 0) {
+        //TEMP
+        //robot.v_motor_intake_right.setPower(gamepad2.left_stick_y);
+        //robot.v_motor_intake_left.setPower(gamepad2.left_stick_y);
+        robot.v_motor_measuring_tape.setPower(gamepad2.left_stick_y);
+        if (gamepad2.left_stick_y < 0) {
             robot.v_servo_intakeHelp.setPower(3.0); //CR Servo
             robot.v_servo_intakeHelp2.setPower(-1.0);
-        }
-        else if(gamepad2.left_stick_y > 0) {
+        } else if (gamepad2.left_stick_y > 0) {
             robot.v_servo_intakeHelp.setPower(-1.0); //CR Servo
             robot.v_servo_intakeHelp2.setPower(1.0);
-        }
-        else {
-           robot.v_servo_intakeHelp.setPower(0.0);// CR Servo
+        } else {
+            robot.v_servo_intakeHelp.setPower(0.0);// CR Servo
             robot.v_servo_intakeHelp2.setPower(intakeHelper2Stop);
         }
-
 
 
         //lift arm turn 180
@@ -230,16 +229,16 @@ public class Shockwave71712017TeleOp extends OpMode {
                 liftTurned = true;
             }
          */
-        if(gamepad2.right_bumper && elapsedtimeg2 == 0) {
+        if (gamepad2.right_bumper && elapsedtimeg2 == 0) {
             /*if(rotatorPosition<1.0)
                 rotatorPosition+=.1;*/
             //robot.v_servo_rotator.setPosition(1.0);
             robot.v_servo_rotator.setPosition(1.0);
             counttimeg2 = true;
         }
-        if(gamepad2.left_bumper && elapsedtimeg2 == 0)  {
-            if(rotatorPosition>0.0)
-                rotatorPosition-=.1;
+        if (gamepad2.left_bumper && elapsedtimeg2 == 0) {
+            if (rotatorPosition > 0.0)
+                rotatorPosition -= .1;
             robot.v_servo_rotator.setPosition(0.0); //was 0.0 before - changed to align with robot
             counttimeg2 = true;
         }
@@ -249,9 +248,18 @@ public class Shockwave71712017TeleOp extends OpMode {
             robot.v_servo_capstone.setPosition(1.0);
         else if (gamepad2.y) {
             robot.v_servo_grabber.setPosition(0.5);
-        }
-        else if (gamepad2.b)
+        } else if (gamepad2.b)
             robot.v_servo_capstone.setPosition(0.05);
+
+        if (gamepad2.a ) {
+            if (switchrightsticktotape == false)
+                switchrightsticktotape = true;
+            else
+                switchrightsticktotape = false;
+
+        }
+
+
 
         /*
         if(gamepad2.right_trigger > 0)  {
@@ -262,17 +270,23 @@ public class Shockwave71712017TeleOp extends OpMode {
         }
         */
         //lift pulley
-        double pulleypower = (double)gamepad2.right_stick_y;
-        if(pulleypower > -.1 && pulleypower < .1)   {
+        double pulleypower = (double) gamepad2.right_stick_y;
+        if (pulleypower > -.1 && pulleypower < .1) {
             pulleypower = 0;
         }
-        if(pulleypower < 0)
-            robot.v_motor_pulley.setPower(pulleypower*0.5);
-        else
-            robot.v_motor_pulley.setPower(pulleypower*0.3);
+        if (!switchrightsticktotape) {
+            if (pulleypower < 0)
+                robot.v_motor_pulley.setPower(pulleypower * 0.5);
+            else
+                robot.v_motor_pulley.setPower(pulleypower * 0.3);
 
 
-        // Loop
+            // Loop
+        }
+        else{
+            robot.v_motor_measuring_tape.setPower(pulleypower);
+        }
+
     }
     /*
      * Code to run ONCE after the driver hits STOP
