@@ -615,6 +615,22 @@ public class Shockwave71712017CommonLinearOp extends LinearOpMode {
         stopRobot(robot);
         return true;
     }
+    public boolean moveTillDistanceAway(Shockwave71712017Hardware robot, double distance, double power){
+        double rangeDistance;
+        int multiplier = 1;
+
+        rangeDistance = robot.v_range_sensor.getDistance(DistanceUnit.CM);
+        if (rangeDistance > distance)
+            return true ;
+        while (rangeDistance < distance && opModeIsActive()){
+            telemetry.addData("cm", "%.2f cm", rangeDistance);
+            telemetry.update() ;
+            goForward(robot, power);
+            rangeDistance = robot.v_range_sensor.getDistance(DistanceUnit.CM);
+        }
+        stopRobot(robot);
+        return true;
+    }
 
     public boolean moveTillDistanceScan(Shockwave71712017Hardware robot, double distance, double armDistance, String side, double power) {  // distance in cm
          double rangeDistance;

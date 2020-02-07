@@ -165,10 +165,16 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 //        else if ( (robot.v_gyro_sensor.getHeading() - startAngle) < 180)
 //            turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);
         //scan
-        //debugTime();
-        moveLeftUsingMecanumWheels(robot, 750, -0.5);//move towards the block
+       // debugTime();
+        //59 CM from wall to blocks
+
+        //scan
+       // position = testInitScan(robot, side, "first");
         sleep(500);
-        position = testInitScan(robot, side, "first");
+        goForwardNRotations(robot, 250,-.8);
+        //move to blocks
+        moveTillDistanceAway(robot, 57, -.2);
+        //moveLeftUsingMecanumWheels(robot, 750, -0.5);//move towards the block
         sleep(500);
         telemetry.addData("after", "position");
         telemetry.update();
@@ -185,6 +191,7 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
                 telemetry.update();
                 //goForwardNRotations(robot, 500, 0.3);
         }
+        position = 3;
 //        telemetry.addData("outside", "case");
 //        telemetry.update();
 //
@@ -196,26 +203,43 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 //        telemetry.update();
 //        sleep(2000);
         sleep(500);
+        //turn to 270 to pick up block = red side
+        turnGyroSpecialPivotToATargetAngle(robot, 270, TURN_RIGHT, 1, 0);
+        //sleep(1500);
+        /**
         if ( (robot.v_gyro_sensor.getHeading() - startAngle) > 180)
             turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_LEFT,1,0);
         else if ( (robot.v_gyro_sensor.getHeading() - startAngle) < 180)
             turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);
+**/
+        moveLeftUsingMecanumWheels(robot, 200, -0.2);
+//for testing go forward and turn:
+/**
+        grabandmove("first");
+        if ( (robot.v_gyro_sensor.getHeading() - startAngle) > 180)
+            turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_LEFT,1,0);
+        else if ( (robot.v_gyro_sensor.getHeading() - startAngle) < 180)
+            turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);
+        stopRobot(robot);
+        debugTime();**/
+//end test
+
         if(position ==2)
             firstblockdistance = 68.5;
         else if(position ==1)
             firstblockdistance= 49.5;
         else
-            firstblockdistance= 89.5;
+            firstblockdistance= 88.5;
         moveTillDistance(robot, firstblockdistance, .2);
 
         firstblockdistance = getDistanceFromWallFront(robot);
-        telemetry.addData("initial block distance:", firstblockdistance);
+        telemetry.addData("initial block distance:", firstblockdistance-3);
         telemetry.update();
-        moveLeftUsingMecanumWheels(robot, 1500, -0.5);//move towards the block
-        if ( (robot.v_gyro_sensor.getHeading() - startAngle) > 180)
+        //moveLeftUsingMecanumWheels(robot, 1500, -0.5);//move towards the block
+       /** if ( (robot.v_gyro_sensor.getHeading() - startAngle) > 180)
             turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_LEFT,1,0);
         else if ( (robot.v_gyro_sensor.getHeading() - startAngle) < 180)
-            turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);
+            turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);**/
         if(grabandmove("first")==true) {
             //moveLeftUsingMecanumWheels(robot, 1000, 0.9);//move towards the block
 

@@ -203,9 +203,9 @@ public class Shockwave71712017TeleOp extends OpMode {
             robot.v_servo_foundation_left.setPosition(0.2);
         }
         //TEMP
-        //robot.v_motor_intake_right.setPower(gamepad2.left_stick_y);
-        //robot.v_motor_intake_left.setPower(gamepad2.left_stick_y);
-        robot.v_motor_measuring_tape.setPower(gamepad2.left_stick_y);
+        robot.v_motor_intake_right.setPower(gamepad2.left_stick_y);
+        robot.v_motor_intake_left.setPower(gamepad2.left_stick_y);
+        //robot.v_motor_measuring_tape.setPower(gamepad2.left_stick_y);
         if (gamepad2.left_stick_y < 0) {
             robot.v_servo_intakeHelp.setPower(3.0); //CR Servo
             robot.v_servo_intakeHelp2.setPower(-1.0);
