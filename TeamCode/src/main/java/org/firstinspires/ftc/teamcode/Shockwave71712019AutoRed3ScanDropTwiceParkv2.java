@@ -151,11 +151,20 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 //                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
 //                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
-        scanInit();
+        //scanInit(); //previous vuforia scanning
         while (robot.v_gyro_sensor.isCalibrating()&& opModeIsActive())
             robot.v_gyro_sensor.calibrate();
         startAngle = robot.v_gyro_sensor.getHeading();
-
+        //scans before play starts
+        position = 1;
+        skystoneDetectionObject skystoneDetectionObject = new skystoneDetectionObject();
+        skystoneDetectionObject.camSetup(hardwareMap);
+        while(!isStarted()){
+            skystoneDetectionObject.updateValues();
+            position = skystoneDetectionObject.getSkyStonePosition(skystoneDetectionObject.getValues());
+            telemetry.addData("Position", position);
+            telemetry.update();
+        }
         waitForStart();
         //while(distance is less than 2 feet from the wall, keep on moving)
         // moveleftusingMechanumwithoutN
