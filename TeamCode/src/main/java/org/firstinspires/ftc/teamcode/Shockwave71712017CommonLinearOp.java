@@ -174,8 +174,8 @@ public class Shockwave71712017CommonLinearOp extends LinearOpMode {
 
     private boolean JXPycoordDone = false;
     private boolean JXPxcoordDone = false;
-
-
+    private double lastAngle = 0;
+    private double globalAngle = 0;
 
     @Override
     public void runOpMode() {
@@ -538,6 +538,76 @@ public class Shockwave71712017CommonLinearOp extends LinearOpMode {
 
         return goalReached;
     }
+
+    public void resetAngle(double last){
+        lastAngle = last;
+        globalAngle = 0;
+    }
+
+    public double pControlTurn(Shockwave71712017Hardware robot, double degrees, double power, PIDController pidRotate){
+        // restart imu angle tracking.
+        resetAngle(robot.v_gyro_sensor.getHeading());
+
+        // if degrees > 359 we cap at 359 with same sign as original degrees.
+        if (Math.abs(degrees) > 359) degrees = (int) Math.copySign(359, degrees);
+
+        // start pid controller. PID controller will monitor the turn angle with respect to the
+        // target angle and reduce power as we approach the target angle. This is to prevent the
+        // robots momentum from overshooting the turn after we turn off the power. The PID controller
+        // reports onTarget() = true when the difference between turn angle and target angle is within
+        // 1% of target (tolerance) which is about 1 degree. This helps prevent overshoot. Overshoot is
+        // dependant on the motor and gearing configuration, starting power, weight of the robot and the
+        // on target tolerance. If the controller overshoots, it will reverse the sign of the output
+        // turning the robot back toward the setpoint value.
+
+        pidRotate.reset();
+        pidRotate.setSetpoint(degrees);
+        pidRotate.setInputRange(0, degrees);
+        pidRotate.setOutputRange(0, power);
+        pidRotate.setTolerance(1);
+        pidRotate.enable();
+
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        // rotate until turn is completed.
+
+        if (degrees < 0)
+        {
+            // On right turn we have to get off zero first.
+            while (opModeIsActive() && robot.v_gyro_sensor.getHeading() == 0)
+            {
+                sleep(100);
+            }
+
+            do
+            {
+                power = pidRotate.performPID(robot.v_gyro_sensor.getHeading()); // power will be - on right turn.
+                turnLeft(robot, 10, power);
+            } while (opModeIsActive() && !pidRotate.onTarget());
+        }
+        else    // left turn.
+            do
+            {
+                power = pidRotate.performPID(robot.v_gyro_sensor.getHeading()); // power will be + on left turn.
+                turnRight(robot, 10, power);
+
+            } while (opModeIsActive() && !pidRotate.onTarget());
+
+        // turn the motors off.
+        stopRobot(robot);
+
+        //rotation =robot.v_gyro_sensor.getHeading();
+
+        // wait for rotation to stop.
+        sleep(300);
+
+        // reset angle tracking on new heading.
+        resetAngle(robot.v_gyro_sensor.getHeading());
+        return 0;
+    }
+
+
     public boolean moveTillColor(Shockwave71712017Hardware robot, int color, double power)
     {
 

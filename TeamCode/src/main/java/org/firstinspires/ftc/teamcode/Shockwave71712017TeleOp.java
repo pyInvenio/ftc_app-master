@@ -2,6 +2,8 @@
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.os.SystemClock;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -61,7 +63,10 @@ public class Shockwave71712017TeleOp extends OpMode {
 //        robot.v_servo_top_lift.setPosition(.5);
 //        robot.v_servo_skystone_grabber.setPosition(0);
     }
-
+    long tickCountertape = System.currentTimeMillis();
+    long prevtickCountertape = System.currentTimeMillis();
+    boolean tickBooleantape = false;
+    boolean tapeBool = false;
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
@@ -133,7 +138,19 @@ public class Shockwave71712017TeleOp extends OpMode {
         //      set_drive_power(l_gp1_left_stick_y, l_gp1_right_stick_y);
         set_drive_power_macanum(gamepad1);
         //  single_stick_drive(l_gp1_right_stick_y, l_gp1_right_stick_x);
+        if (tapeBool){
+            tickCountertape = SystemClock.currentThreadTimeMillis();
 
+            if (tickBooleantape && tickCountertape - prevtickCountertape > 500 ) {
+                robot.v_motor_measuring_tape.setPower(.3);
+            } else if (!tickBooleantape && tickCountertape - prevtickCountertape >500) {
+                robot.v_motor_measuring_tape.setPower(-.3);
+            } else {
+                robot.v_motor_measuring_tape.setPower(0);
+                tickCountertape = 0;
+                tapeBool = false;
+            }
+        }
         if (counttimeg1) {
             elapsedtimeg1 += 1;
             if (elapsedtimeg1 > thresholdtime) {
@@ -174,7 +191,7 @@ public class Shockwave71712017TeleOp extends OpMode {
         if (gamepad1.a) {
             robot.v_servo_top_lift.setPosition(0.2);
             long start = System.currentTimeMillis();
-            while (shockWait(300, start)) ;//orginal 0.9
+            while (shockWait(400, start)) ;//orginal 0.9
             robot.v_servo_grabber.setPosition(0.1); // ORIGINAL : 0.2
 
             //topliftdown = true;
@@ -246,17 +263,21 @@ public class Shockwave71712017TeleOp extends OpMode {
         //lift grabber grab and release
         if (gamepad2.x)
             robot.v_servo_capstone.setPosition(1.0);
-        else if (gamepad2.y) {
-            robot.v_servo_grabber.setPosition(0.5);
-        } else if (gamepad2.b)
-            robot.v_servo_capstone.setPosition(0.05);
+         else if (gamepad2.b)
+            robot.v_servo_capstone.setPosition(0.10);
 
-        if (gamepad2.a ) {
-            if (switchrightsticktotape == false)
-                switchrightsticktotape = true;
-            else
-                switchrightsticktotape = false;
+        if (gamepad2.a) {
+            tickBooleantape = true;
+            tickCountertape ++;
+            tapeBool = true;
+            prevtickCountertape = SystemClock.currentThreadTimeMillis();
 
+        }
+        if (gamepad2.y){
+            tickBooleantape = false;
+            tickCountertape ++;
+            tapeBool = true;
+            prevtickCountertape = SystemClock.currentThreadTimeMillis();
         }
 
 

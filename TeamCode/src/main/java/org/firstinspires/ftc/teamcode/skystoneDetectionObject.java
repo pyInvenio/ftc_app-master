@@ -31,9 +31,10 @@ public class skystoneDetectionObject {
 	private static float rectHeight = .6f/8f;
 	private static float rectWidth = 2f/8f;
 
-	private static float offsetX = .75f/8f;//changing this moves the three rects and the three circles left or right, range : (-2, 2) not inclusive
-	private static float offsetY = 2.5f/8f;//changing this moves the three rects and circles up or down, range: (-4, 4) not inclusive
-
+	private static float offsetX = .1f/8f;//changing this moves the three rects and the three circles left or right, range : (-2, 2) not inclusive
+	private static float offsetY = .2f/8f;//changing this moves the three rects and circles up or down, range: (-4, 4) not inclusive
+//[-4 to 0] is going up for Y and going closer for X
+	//[0 to 4] is going down for Y and going wider for X
 	private static float[] midPos = {4f/8f, 4f/8f+offsetY};//0 = col, 1 = row
 	private static float[] leftPos = {2f/8f-offsetX, 4f/8f+offsetY};
 	private static float[] rightPos = {6f/8f+offsetX, 4f/8f+offsetY};
@@ -47,10 +48,10 @@ public class skystoneDetectionObject {
 	}
 	public void camSetup (HardwareMap hwMap) {
 		int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
-		phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+		phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.FRONT, cameraMonitorViewId);
 		phoneCam.openCameraDevice();//open camera
 		phoneCam.setPipeline(new StageSwitchingPipeline());//different stages
-		phoneCam.startStreaming(rows, cols, OpenCvCameraRotation.UPRIGHT);//display on RC
+		phoneCam.startStreaming(rows, cols, OpenCvCameraRotation.UPSIDE_DOWN);//display on RC
 	}
 	public int[] getValues() {
 
