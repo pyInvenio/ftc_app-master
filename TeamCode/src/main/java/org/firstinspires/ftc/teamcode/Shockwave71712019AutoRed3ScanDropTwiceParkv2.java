@@ -80,7 +80,7 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
-
+    private int TWOSEVENTYDEGREE = 273;
     //Detector object
 //DOGCV    private GoldAlignDetector detector; // = new GoldAlignDetector();
 
@@ -172,6 +172,13 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 
 
         waitForStart();
+//
+//        if ( (robot.v_gyro_sensor.getHeading()) > TWOSEVENTYDEGREE)
+//            turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_RIGHT,1,0);
+//        else if ( (robot.v_gyro_sensor.getHeading() ) < TWOSEVENTYDEGREE)
+//            turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_LEFT,1,0);
+//        debugTime();
+
         //while(distance is less than 2 feet from the wall, keep on moving)
         // moveleftusingMechanumwithoutN
         //orient using gyro
@@ -186,13 +193,14 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
         //scan
        // position = testInitScan(robot, side, "first");
         //sleep(500);
-        goForwardNRotations(robot, 450,-1);
+        goForwardNRotations(robot, 380,-.8);
         //move to blocks
+        sleep(100);
         moveTillDistanceAway(robot, 57, -.2);
         //moveTillDistanceAway(robot, 53, -.2);
 
         //moveLeftUsingMecanumWheels(robot, 750, -0.5);//move towards the block
-        sleep(500);
+        sleep(200);
         telemetry.addData("after", "position");
         telemetry.update();
         switch(position)
@@ -219,11 +227,12 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 //        telemetry.addData("Distance with", getDistanceFromWallFront(robot)- armDistance);
 //        telemetry.update();
 //        sleep(2000);
-        sleep(500);
-        //turn to 270 to pick up block = red side
-        turnGyroSpecialPivotToATargetAngle(robot, 270, TURN_RIGHT, 2, 0);
-        //pControlTurn(robot, 270, .8, pidController);
-        telemetry.addData("turn", "270");
+        //sleep(200);
+        //turn to TWOSEVENTYDEGREE to pick up block = red side
+        turnGyroSpecialPivotToATargetAngle(robot, 310, TURN_RIGHT, 3, 0);
+        turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_RIGHT, 1, 0);
+        //pControlTurn(robot, TWOSEVENTYDEGREE, .8, pidController);
+        telemetry.addData("turn", "TWOSEVENTYDEGREE");
 
         //sleep(1500);
         /**
@@ -232,10 +241,24 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
         else if ( (robot.v_gyro_sensor.getHeading() - startAngle) < 180)
             turnGyroSpecialPivotToATargetAngle(robot,startAngle,TURN_RIGHT,1,0);
 **/    // sleep(5000);
-        moveLeftUsingMecanumWheels(robot, 200, -0.2);
+        moveLeftUsingMecanumWheels(robot, 130, -0.2);
         //moves up to the skystone to pick it up
-
-
+       // sleep(5000);
+        telemetry.addData("Angle", robot.v_gyro_sensor.getHeading());
+        telemetry.update();
+        if ( (robot.v_gyro_sensor.getHeading()) > TWOSEVENTYDEGREE) {
+            turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_RIGHT, 2, 0);
+            telemetry.addData("Turning left", "turning left");
+            telemetry.update();
+        }
+        else if ( (robot.v_gyro_sensor.getHeading() ) < TWOSEVENTYDEGREE) {
+            telemetry.addData("Turning right", "turning right");
+            telemetry.update();
+            turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_LEFT, 2, 0);
+        }
+        telemetry.addData("if statement", "finished");
+        telemetry.update();
+        //sleep(5000);
 //for testing go forward and turn:
 /**
         grabandmove("first");
@@ -251,14 +274,14 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 
         //moves the sidearm to match the skystone
         if(position ==2)
-            firstblockdistance = 68.5;
+            firstblockdistance = 73.5;
         else if(position ==1)
-            firstblockdistance= 49.5;
+            firstblockdistance= 54.5;
         else
-            firstblockdistance= 88.5;
+            firstblockdistance= 93.5;
       moveTillDistance(robot, firstblockdistance, .3);
 //
-       firstblockdistance = getDistanceFromWallFront(robot);
+       //firstblockdistance = getDistanceFromWallFront(robot);
         telemetry.addData("initial block distance:", firstblockdistance-3);
         telemetry.update();
 
@@ -304,13 +327,19 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 //            goForwardNRotations(robot, 250,-.8);
 //            //move to blocks
 //            moveTillDistanceAway(robot, 57, -.2);
-//            turnGyroSpecialPivotToATargetAngle(robot, 270, TURN_RIGHT, 1, 0);
-//            telemetry.addData("turn", "270");
+//            turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_RIGHT, 1, 0);
+//            telemetry.addData("turn", "TWOSEVENTYDEGREE");
 //            sleep(5000);
 //            moveLeftUsingMecanumWheels(robot, 300, -0.2);
             //after grabandmove(first) - should be in same position before picking up the first skystone
+            sleep(100);
             moveTillDistance(robot, firstblockdistance-61, .3);
             //moves to the section closest the wall (length of three blocks is 61 cm)
+            moveLeftUsingMecanumWheels(robot, 300, -0.5);
+            if ( (robot.v_gyro_sensor.getHeading()) > TWOSEVENTYDEGREE)
+                turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_RIGHT,2,0);
+            else if ( (robot.v_gyro_sensor.getHeading()) < TWOSEVENTYDEGREE)
+                turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_LEFT,2,0);
 
             grabandmove("second");
             //pullFoundation();
@@ -331,7 +360,7 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
     }
     public void debugTime(){
         while(true){
-            telemetry.addData("distance: ", getDistanceFromWallFront(robot));
+            telemetry.addData("distance: ", robot.v_gyro_sensor.getHeading());
             telemetry.update();
         }
     }
@@ -339,8 +368,8 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
     public boolean pullFoundation() {
         //call once the skystone is dropped
         //turning back to front grab the foundation puller using multiplication factor
-        turnGyroSpecialPivotToATargetAngle(robot, 270, TURN_LEFT, 1, 0);
-        telemetry.addData("turn", "-270");
+        turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_LEFT, 1, 0);
+        telemetry.addData("turn", "-TWOSEVENTYDEGREE");
         sleep(3000);
         foundationDown(robot);
         sleep(1000);
@@ -351,7 +380,7 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
         //move left
         moveLeftUsingMecanumWheels(robot, 300, -0.2);
         //turn left to use moveTillColor and moves forward until reach color line
-        turnGyroSpecialPivotToATargetAngle(robot, 270, TURN_LEFT, 1, 0);
+        turnGyroSpecialPivotToATargetAngle(robot, TWOSEVENTYDEGREE, TURN_LEFT, 1, 0);
         sleep(2000);
         //moveTillColor(robot, color, 0.2);//moves robot back to the red or blue line
 
@@ -406,14 +435,17 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
         //added by Marian
         //added to move out of the way when its going under alliance bridge
         moveLeftUsingMecanumWheels(robot, 400, 0.3);
-        if ( (robot.v_gyro_sensor.getHeading()) > 270)
-            turnGyroSpecialPivotToATargetAngle(robot,270,TURN_LEFT,1,0);
-        else if ( (robot.v_gyro_sensor.getHeading() ) < 270)
-            turnGyroSpecialPivotToATargetAngle(robot,270,TURN_RIGHT,1,0);
+        if ( (robot.v_gyro_sensor.getHeading()) > TWOSEVENTYDEGREE)
+            turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_RIGHT,2,0);
+        else if ( (robot.v_gyro_sensor.getHeading() ) < TWOSEVENTYDEGREE)
+            turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_LEFT,2,0);
 
 
         //moves forward to the foundation puller
-        goForwardNRotations(robot, 4500, -0.5);
+        if(i.equals("first"))
+            goForwardNRotations(robot, 3000, -1);
+        else
+            goForwardNRotations(robot, 3000+1500, -1);
 
 //        //moveLeftUsingMecanumWheels(robot, 600, -0.2);
 
@@ -445,14 +477,12 @@ public class Shockwave71712019AutoRed3ScanDropTwiceParkv2 extends Shockwave71712
 
         else if(i.equals("first")) {
             //stopRobot(robot);
-            goForwardNRotations(robot, 4000, 1);
-
+            goForwardNRotations(robot, 3000, 1);
+            if ( (robot.v_gyro_sensor.getHeading()) > TWOSEVENTYDEGREE)
+                turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_RIGHT,2,0);
+            else if ( (robot.v_gyro_sensor.getHeading()) < TWOSEVENTYDEGREE)
+                turnGyroSpecialPivotToATargetAngle(robot,TWOSEVENTYDEGREE,TURN_LEFT,2,0);
             //added by Marian
-            moveLeftUsingMecanumWheels(robot, 300, -0.5);
-            if ( (robot.v_gyro_sensor.getHeading()) > 270)
-                turnGyroSpecialPivotToATargetAngle(robot,270,TURN_LEFT,1,0);
-            else if ( (robot.v_gyro_sensor.getHeading()) < 270)
-                turnGyroSpecialPivotToATargetAngle(robot,270,TURN_RIGHT,1,0);
 
             //move back to starting position of auto
         }

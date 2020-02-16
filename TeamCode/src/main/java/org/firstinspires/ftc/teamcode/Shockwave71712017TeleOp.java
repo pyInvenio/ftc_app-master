@@ -266,19 +266,19 @@ public class Shockwave71712017TeleOp extends OpMode {
          else if (gamepad2.b)
             robot.v_servo_capstone.setPosition(0.10);
 
-        if (gamepad2.a) {
-            tickBooleantape = true;
-            tickCountertape ++;
-            tapeBool = true;
-            prevtickCountertape = SystemClock.currentThreadTimeMillis();
-
-        }
-        if (gamepad2.y){
-            tickBooleantape = false;
-            tickCountertape ++;
-            tapeBool = true;
-            prevtickCountertape = SystemClock.currentThreadTimeMillis();
-        }
+//        if (gamepad2.a) {
+//            tickBooleantape = true;
+//            tickCountertape ++;
+//            tapeBool = true;
+//            prevtickCountertape = SystemClock.currentThreadTimeMillis();
+//
+//        }
+//        if (gamepad2.y){
+//            tickBooleantape = false;
+//            tickCountertape ++;
+//            tapeBool = true;
+//            prevtickCountertape = SystemClock.currentThreadTimeMillis();
+//        }
 
 
 
@@ -304,9 +304,9 @@ public class Shockwave71712017TeleOp extends OpMode {
 
             // Loop
         }
-        else{
-            robot.v_motor_measuring_tape.setPower(pulleypower);
-        }
+//        else{
+//            robot.v_motor_measuring_tape.setPower(pulleypower);
+//        }
 
     }
     /*

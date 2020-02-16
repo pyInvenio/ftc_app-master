@@ -407,8 +407,9 @@ public class Shockwave71712017CommonLinearOp extends LinearOpMode {
             telemetry.addData("Current Angle", robot.v_gyro_sensor.getHeading());
             telemetry.update();
 
-            if (((robot.v_gyro_sensor.getHeading()) <= targetAngle + 5) && (robot.v_gyro_sensor.getHeading()) >= targetAngle - 5) {
+            if (((robot.v_gyro_sensor.getHeading()) <= targetAngle + 1) && (robot.v_gyro_sensor.getHeading()) >= targetAngle - 1) {
 //            if ((list.get(robot.v_gyro_sensor.getHeading()) <= targetAngle + 5) && (list.get(robot.v_gyro_sensor.getHeading()) >= targetAngle - 5)) {
+                stopRobot(robot);
                 telemetry.addData("REACHED ANGLE", list.get(robot.v_gyro_sensor.getHeading()));
                 telemetry.update();
                 goalReached = true;
